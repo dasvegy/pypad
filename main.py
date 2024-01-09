@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import datetime
 
 # -- Screen Size -- #
 SCREEN_SIZE = "420x480"
@@ -47,8 +48,18 @@ button_style = {
 
 
 class MyGUI:
-    def file_safe(self):
-        print("SAFE")
+    def file_save_diary(self):
+        today = datetime.datetime.now()
+        print(today.strftime("%d.%m.%Y"))
+        thetext = self.textbox.get("1.0", 'end-1c')
+        file = open(f"days/{today.strftime('%d.%m.%Y')}.txt", "x")
+        file.write(thetext)
+
+    def file_save(self):
+        thetext = self.textbox.get("1.0", 'end-1c')
+        thefilename = "new"
+        file = open(thefilename + ".txt")
+        file.write(thetext)
 
     def exit(self):
         self.root.quit()
@@ -71,29 +82,35 @@ class MyGUI:
         self.menubuttonframe = tk.Frame(self.root, background=BACKGROUND_COLOR)
         self.menubuttonframe.pack(padx=3, pady=3, anchor=tk.W)
 
-        self.menubutton_file = tk.Button(self.menubuttonframe, text="File", command=self.file_safe, width=5,
+        self.menubutton_file = tk.Button(self.menubuttonframe, text="File", command=self.file_save, width=5,
                                          **button_style)
         self.menubutton_file.pack(padx=1, side=tk.LEFT)
         self.menubutton_file.bind("<Enter>", self.change_color_on_hover)
         self.menubutton_file.bind("<Leave>", self.restore_color_on_hover)
 
-        self.menubutton_edit = tk.Button(self.menubuttonframe, text="Edit", command=self.file_safe, width=5,
+        self.menubutton_edit = tk.Button(self.menubuttonframe, text="Edit", command=self.file_save, width=5,
                                          **button_style)
         self.menubutton_edit.pack(padx=1, side=tk.LEFT)
         self.menubutton_edit.bind("<Enter>", self.change_color_on_hover)
         self.menubutton_edit.bind("<Leave>", self.restore_color_on_hover)
 
-        self.menubutton_quit = tk.Button(self.menubuttonframe, text="Quit", command=self.exit, width=5,
-                                         **button_style)
-        self.menubutton_quit.pack(padx=1, side=tk.RIGHT)
-        self.menubutton_quit.bind("<Enter>", self.change_color_on_hover)
-        self.menubutton_quit.bind("<Leave>", self.restore_color_on_hover)
-
-        self.menubutton_search = tk.Button(self.menubuttonframe, text="Search", command=self.file_safe, width=7,
+        self.menubutton_search = tk.Button(self.menubuttonframe, text="Search", command=self.file_save, width=7,
                                            **button_style)
-        self.menubutton_search.pack(padx=1, side=tk.RIGHT)
+        self.menubutton_search.pack(padx=1, side=tk.LEFT)
         self.menubutton_search.bind("<Enter>", self.change_color_on_hover)
         self.menubutton_search.bind("<Leave>", self.restore_color_on_hover)
+
+        self.menubutton_diary = tk.Button(self.menubuttonframe, text="Diary", command=self.file_save_diary, width=7,
+                                          **button_style)
+        self.menubutton_diary.pack(padx=1, side=tk.LEFT)
+        self.menubutton_diary.bind("<Enter>", self.change_color_on_hover)
+        self.menubutton_diary.bind("<Leave>", self.restore_color_on_hover)
+
+        self.menubutton_quit = tk.Button(self.menubuttonframe, text="Quit", command=self.exit, width=5,
+                                         **button_style)
+        self.menubutton_quit.pack(padx=1, side=tk.LEFT)
+        self.menubutton_quit.bind("<Enter>", self.change_color_on_hover)
+        self.menubutton_quit.bind("<Leave>", self.restore_color_on_hover)
 
         # -- TextBox -- #
         self.textbox = tk.Text(self.root, width=3000, height=3000, bg=BLACK, foreground=FOREGROUND_COLOR,
