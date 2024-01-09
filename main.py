@@ -43,40 +43,61 @@ button_style = {
     'activebackground': RED,
     'highlightthickness': 0,
     'border': 0,
-    'width': 5
 }
 
 
 class MyGUI:
     def file_safe(self):
-        pass
+        print("SAFE")
 
     def exit(self):
+        self.root.quit()
         quit()
+
+    def change_color_on_hover(self, event):
+        event.widget.config(background=BUTTON_RED_2, foreground=BLACK)
+
+    def restore_color_on_hover(self, event):
+        event.widget.config(background=BLACK, foreground=BRIGHTBRIGHT_WHITE)
 
     def __init__(self):
         self.root = tk.Tk()
         self.root.geometry(SCREEN_SIZE)
         self.root.title("vegy's YT Downloader")
-        self.root.resizable(False, False)
+        # self.root.resizable(False, False)
         self.root.configure(background=BACKGROUND_COLOR)
 
+        # -- MenuButtons -- #
         self.menubuttonframe = tk.Frame(self.root, background=BACKGROUND_COLOR)
-        self.menubuttonframe.pack(padx=5, pady=5)
+        self.menubuttonframe.pack(padx=3, pady=3, anchor=tk.W)
 
-        self.menubutton_file = tk.Button(self.menubuttonframe, text="File", command=self.file_safe, **button_style)
+        self.menubutton_file = tk.Button(self.menubuttonframe, text="File", command=self.file_safe, width=5,
+                                         **button_style)
         self.menubutton_file.pack(padx=1, side=tk.LEFT)
+        self.menubutton_file.bind("<Enter>", self.change_color_on_hover)
+        self.menubutton_file.bind("<Leave>", self.restore_color_on_hover)
 
-        self.menubutton_edit = tk.Button(self.menubuttonframe, text="Edit", command=self.file_safe, **button_style)
+        self.menubutton_edit = tk.Button(self.menubuttonframe, text="Edit", command=self.file_safe, width=5,
+                                         **button_style)
         self.menubutton_edit.pack(padx=1, side=tk.LEFT)
+        self.menubutton_edit.bind("<Enter>", self.change_color_on_hover)
+        self.menubutton_edit.bind("<Leave>", self.restore_color_on_hover)
 
-        self.menubutton_quit = tk.Button(self.menubuttonframe, text="Quit", command=self.exit, **button_style)
+        self.menubutton_quit = tk.Button(self.menubuttonframe, text="Quit", command=self.exit, width=5,
+                                         **button_style)
         self.menubutton_quit.pack(padx=1, side=tk.RIGHT)
+        self.menubutton_quit.bind("<Enter>", self.change_color_on_hover)
+        self.menubutton_quit.bind("<Leave>", self.restore_color_on_hover)
 
-        self.menubutton_search = tk.Button(self.menubuttonframe, text="Search", command=self.file_safe, **button_style)
+        self.menubutton_search = tk.Button(self.menubuttonframe, text="Search", command=self.file_safe, width=7,
+                                           **button_style)
         self.menubutton_search.pack(padx=1, side=tk.RIGHT)
+        self.menubutton_search.bind("<Enter>", self.change_color_on_hover)
+        self.menubutton_search.bind("<Leave>", self.restore_color_on_hover)
 
-        self.textbox = tk.Text(self.root, width=3000, height=3000, bg=BACKGROUND_COLOR, foreground=FOREGROUND_COLOR, font=NormalFont)
+        # -- TextBox -- #
+        self.textbox = tk.Text(self.root, width=3000, height=3000, bg=BLACK, foreground=FOREGROUND_COLOR,
+                               font=NormalFont, borderwidth=0, border=0)
         self.textbox.pack()
 
         # -- MainLoop -- #
