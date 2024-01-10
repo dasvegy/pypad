@@ -82,7 +82,7 @@ class MyGUI:
     def __init__(self):
         self.root = tk.Tk()
         self.root.geometry(SCREEN_SIZE)
-        self.root.title("vegy's YT Downloader")
+        self.root.title("PyPad")
         # self.root.resizable(False, False)
         self.root.configure(background=BACKGROUND_COLOR)
 
