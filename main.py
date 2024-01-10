@@ -49,17 +49,25 @@ button_style = {
 
 class MyGUI:
     def file_save_diary(self):
-        today = datetime.datetime.now()
-        print(today.strftime("%d.%m.%Y"))
-        thetext = self.textbox.get("1.0", 'end-1c')
-        file = open(f"days/{today.strftime('%d.%m.%Y')}.txt", "x")
-        file.write(thetext)
+        try:
+            today = datetime.datetime.now()
+            thetext = self.textbox.get("1.0", 'end-1c')
+            file = open(f"days/{today.strftime('%d.%m.%Y')}.txt", "x")
+            file.write(thetext)
+        except:
+            self.error_file_save()
 
     def file_save(self):
-        thetext = self.textbox.get("1.0", 'end-1c')
-        thefilename = "new"
-        file = open(thefilename + ".txt")
-        file.write(thetext)
+        try:
+            thetext = self.textbox.get("1.0", 'end-1c')
+            thefilename = "new"
+            file = open(thefilename + ".txt")
+            file.write(thetext)
+        except:
+            self.error_file_save()
+
+    def error_file_save(self):
+        print("Error, File already exsists")
 
     def exit(self):
         self.root.quit()
