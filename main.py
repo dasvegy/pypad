@@ -5,7 +5,7 @@ import datetime
 
 # -- Screen Size -- #
 SCREEN_SIZE = "420x480"
-MINI_WINDOW_SIZE = "325x100"
+MINI_WINDOW_SIZE = "325x150"
 
 # -- Fonts -- #
 TitleFont = ("JetBrains Mono", 14)
@@ -87,18 +87,24 @@ class MyGUI:
         self.mbfs_cancel.bind("<Enter>", self.change_color_on_hover)
         self.mbfs_cancel.bind("<Leave>", self.restore_color_on_hover)
 
-        self.tbfs = tk.Text(self.filesavewindow, width=5000, height=2, bg=BLACK, foreground=FOREGROUND_COLOR,
-                            font=NormalFont, borderwidth=0, border=0)
-        self.tbfs.pack(padx=5, pady=5)
+        self.filenamelabel = tk.Label(self.filesavewindow, text="Filename:", font=SmallFont,
+                                      foreground=WHITE, background=BACKGROUND_COLOR)
+        self.filenamelabel.pack(padx=1, pady=1, anchor=tk.W)
+
+        self.tbfs = tk.Text(self.filesavewindow, width=5000, height=1, bg=BLACK, foreground=FOREGROUND_COLOR,
+                            font=NormalFont, borderwidth=0, border=0, highlightthickness=0)
+        self.tbfs.pack(padx=5, pady=2)
 
         self.filesavewindow.mainloop()
 
-    def file_save(self, filename):
-        # Saving the File
+    def file_save(self):
         try:
             thetext = self.textbox.get("1.0", 'end-1c')
-            thefilename = str(filename)
-            file = open(thefilename + ".txt")
+            thefilename = self.tbfs.get("1.0", 'end-1c')
+            if os.path.isfile(thefilename + ".txt") == True:
+                file = open(thefilename + ".txt")
+            else:
+                file = open(thefilename + ".txt", "x")
             file.write(thetext)
         except:
             self.error_file_save()
