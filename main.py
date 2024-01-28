@@ -139,13 +139,13 @@ class MyGUI:
         self.menubutton_file.bind("<Enter>", self.change_color_on_hover)
         self.menubutton_file.bind("<Leave>", self.restore_color_on_hover)
 
-        self.menubutton_edit = tk.Button(self.menubuttonframe, text="Edit", command=self.file_save, width=5,
+        self.menubutton_edit = tk.Button(self.menubuttonframe, text="Edit", command=self.exit, width=5,
                                          **button_style)
         self.menubutton_edit.pack(padx=1, side=tk.LEFT)
         self.menubutton_edit.bind("<Enter>", self.change_color_on_hover)
         self.menubutton_edit.bind("<Leave>", self.restore_color_on_hover)
 
-        self.menubutton_search = tk.Button(self.menubuttonframe, text="Search", command=self.file_save, width=7,
+        self.menubutton_search = tk.Button(self.menubuttonframe, text="Search", command=self.exit, width=7,
                                            **button_style)
         self.menubutton_search.pack(padx=1, side=tk.LEFT)
         self.menubutton_search.bind("<Enter>", self.change_color_on_hover)
