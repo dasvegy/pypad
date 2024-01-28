@@ -4,6 +4,7 @@ import datetime
 
 # -- Screen Size -- #
 SCREEN_SIZE = "420x480"
+MINI_WINDOW_SIZE = "325x100"
 
 # -- Fonts -- #
 TitleFont = ("JetBrains Mono", 14)
@@ -57,10 +58,40 @@ class MyGUI:
         except:
             self.error_file_save()
 
-    def file_save(self):
+    def file_save_window(self):
+        # Filesave Window
+        self.filesavewindow = tk.Tk()
+        self.filesavewindow.geometry(MINI_WINDOW_SIZE)
+        self.filesavewindow.title("Save File")
+        self.filesavewindow.resizable(False, False)
+        self.filesavewindow.configure(background=BACKGROUND_COLOR)
+
+        self.mbfs = tk.Frame(self.filesavewindow, background=BACKGROUND_COLOR)
+        self.mbfs.pack(padx=3, pady=3, anchor=tk.E, side=tk.BOTTOM)
+
+        self.mbfs_save = tk.Button(self.mbfs, text="Save", command=self.file_save, width=5,
+                                   **button_style)
+        self.mbfs_save.pack(padx=1, side=tk.LEFT)
+        self.mbfs_save.bind("<Enter>", self.change_color_on_hover)
+        self.mbfs_save.bind("<Leave>", self.restore_color_on_hover)
+
+        self.mbfs_cancel = tk.Button(self.mbfs, text="Cancel", command=self.filesavewindow.destroy, width=5,
+                                     **button_style)
+        self.mbfs_cancel.pack(padx=1, side=tk.LEFT)
+        self.mbfs_cancel.bind("<Enter>", self.change_color_on_hover)
+        self.mbfs_cancel.bind("<Leave>", self.restore_color_on_hover)
+
+        self.tbfs = tk.Text(self.filesavewindow, width=5000, height=2, bg=BLACK, foreground=FOREGROUND_COLOR,
+                            font=NormalFont, borderwidth=0, border=0)
+        self.tbfs.pack(padx=5, pady=5)
+
+        self.filesavewindow.mainloop()
+
+    def file_save(self, filename):
+        # Saving the File
         try:
             thetext = self.textbox.get("1.0", 'end-1c')
-            thefilename = "new"
+            thefilename = str(filename)
             file = open(thefilename + ".txt")
             file.write(thetext)
         except:
@@ -90,7 +121,7 @@ class MyGUI:
         self.menubuttonframe = tk.Frame(self.root, background=BACKGROUND_COLOR)
         self.menubuttonframe.pack(padx=3, pady=3, anchor=tk.W)
 
-        self.menubutton_file = tk.Button(self.menubuttonframe, text="File", command=self.file_save, width=5,
+        self.menubutton_file = tk.Button(self.menubuttonframe, text="File", command=self.file_save_window, width=5,
                                          **button_style)
         self.menubutton_file.pack(padx=1, side=tk.LEFT)
         self.menubutton_file.bind("<Enter>", self.change_color_on_hover)
