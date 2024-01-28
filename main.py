@@ -1,3 +1,4 @@
+import os.path
 import tkinter as tk
 from tkinter import ttk
 import datetime
@@ -50,6 +51,11 @@ button_style = {
 
 class MyGUI:
     def file_save_diary(self):
+        if os.path.isdir("days") == True:
+            pass
+        else:
+            os.mkdir("days")
+
         try:
             today = datetime.datetime.now()
             thetext = self.textbox.get("1.0", 'end-1c')
