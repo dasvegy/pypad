@@ -1,7 +1,9 @@
 import os.path
 import tkinter as tk
-from tkinter import ttk
 import datetime
+import tkinter.filedialog
+import tkinter.filedialog
+from tkinter import ttk
 
 # -- Screen Size -- #
 SCREEN_SIZE = "420x480"
@@ -50,6 +52,7 @@ button_style = {
 
 
 class MyGUI:
+
     def file_save_diary(self):
         if os.path.isdir("days") == True:
             pass
@@ -64,56 +67,52 @@ class MyGUI:
         except:
             self.error_file_save()
 
-    def file_save_window(self):
-        # Filesave Window
-        self.filesavewindow = tk.Tk()
-        self.filesavewindow.geometry(MINI_WINDOW_SIZE)
-        self.filesavewindow.title("Save File")
-        self.filesavewindow.resizable(False, False)
-        self.filesavewindow.configure(background=BACKGROUND_COLOR)
+        tkinter.filedialog.asksaveasfilename(initialfile='Untitled.txt',
+                                             defaultextension=".txt",
+                                             filetypes=[("All Files", "*.*"),
+                                                        ("Text Documents", ".txt")])
 
-        self.mbfs = tk.Frame(self.filesavewindow, background=BACKGROUND_COLOR)
-        self.mbfs.pack(padx=3, pady=3, anchor=tk.E, side=tk.BOTTOM)
+    def openFile(self):
+        self.file = tkinter.filedialog.askopenfilename(defaultextension=".txt",
+                                                       filetypes=[("All Files", "*.*"),
+                                                                  ("Text Documents", "*.txt")])
 
-        self.mbfs_save = tk.Button(self.mbfs, text="Save", command=self.file_save, width=5,
-                                   **button_style)
-        self.mbfs_save.pack(padx=1, side=tk.LEFT)
-        self.mbfs_save.bind("<Enter>", self.change_color_on_hover)
-        self.mbfs_save.bind("<Leave>", self.restore_color_on_hover)
+        if self.file == "":
+            self.file = None
+        else:
+            self.root.title(os.path.basename(self.file) + " - PyPad")
+            self.textbox.delete("1.0", 'end-1c')
 
-        self.mbfs_cancel = tk.Button(self.mbfs, text="Cancel", command=self.filesavewindow.destroy, width=5,
-                                     **button_style)
-        self.mbfs_cancel.pack(padx=1, side=tk.LEFT)
-        self.mbfs_cancel.bind("<Enter>", self.change_color_on_hover)
-        self.mbfs_cancel.bind("<Leave>", self.restore_color_on_hover)
-
-        self.filenamelabel = tk.Label(self.filesavewindow, text="Filename:", font=SmallFont,
-                                      foreground=WHITE, background=BACKGROUND_COLOR)
-        self.filenamelabel.pack(padx=1, pady=1, anchor=tk.W)
-
-        self.tbfs = tk.Text(self.filesavewindow, width=5000, height=1, bg=BLACK, foreground=FOREGROUND_COLOR,
-                            font=NormalFont, borderwidth=0, border=0, highlightthickness=0)
-        self.tbfs.pack(padx=5, pady=2)
-
-        self.filesavewindow.mainloop()
+            file = open(self.file, "r")
+            self.textbox.insert(1.0, file.read())
+            file.close()
 
     def file_save(self):
-        try:
-            thetext = self.textbox.get("1.0", 'end-1c')
-            thefilename = self.tbfs.get("1.0", 'end-1c')
-            if os.path.isfile(thefilename + ".txt") == True:
-                file = open(thefilename + ".txt")
+        if self.file is None:
+            self.file = tkinter.filedialog.asksaveasfilename(initialfile='Untitled.txt',
+                                                             defaultextension=".txt",
+                                                             filetypes=[("All Files", "*.*"),
+                                                                        ("Text Documents", ".txt")])
+
+            if self.file == "":
+                self.file = None
             else:
-                file = open(thefilename + ".txt", "x")
-            file.write(thetext)
-        except:
-            self.error_file_save()
+                file = open(self.file, "w")
+                file.write(self.textbox.get("1.0", 'end-1c'))
+                file.close()
+                # window title
+                self.root.title(os.path.basename(self.file) + " - PyPad")
+
+        else:
+            file = open(self.file, "w")
+            file.write(self.textbox.get("1.0", 'end-1c'))
+            file.close()
 
     def error_file_save(self):
         print("Error, File already exsists")
 
     def exit(self):
-        self.root.quit()
+        self.root.destroy()
         quit()
 
     def change_color_on_hover(self, event):
@@ -128,12 +127,14 @@ class MyGUI:
         self.root.title("PyPad")
         # self.root.resizable(False, False)
         self.root.configure(background=BACKGROUND_COLOR)
+        self.file = None
+        file = None
 
         # -- MenuButtons -- #
         self.menubuttonframe = tk.Frame(self.root, background=BACKGROUND_COLOR)
         self.menubuttonframe.pack(padx=3, pady=3, anchor=tk.W)
 
-        self.menubutton_file = tk.Button(self.menubuttonframe, text="File", command=self.file_save_window, width=5,
+        self.menubutton_file = tk.Button(self.menubuttonframe, text="File", command=self.file_save, width=5,
                                          **button_style)
         self.menubutton_file.pack(padx=1, side=tk.LEFT)
         self.menubutton_file.bind("<Enter>", self.change_color_on_hover)
