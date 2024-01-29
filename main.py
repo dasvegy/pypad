@@ -127,6 +127,9 @@ class MyGUI:
         self.root.title("PyPad")
         # self.root.resizable(False, False)
         self.root.configure(background=BACKGROUND_COLOR)
+        self.icon = tk.PhotoImage(file="assets/icon.png")
+        self.root.iconphoto(False, self.icon)
+
         self.file = None
         file = None
 
