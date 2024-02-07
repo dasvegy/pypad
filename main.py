@@ -115,6 +115,11 @@ class MyGUI:
         self.root.destroy()
         quit()
 
+    def search(self):
+        text = self.textbox.get("1.0", 'end-1c')
+        textsearch = None
+        # text.find(f"{textsearch}")
+
     def change_color_on_hover(self, event):
         event.widget.config(background=BUTTON_RED_2, foreground=BLACK)
 
@@ -127,8 +132,8 @@ class MyGUI:
         self.root.title("PyPad")
         # self.root.resizable(False, False)
         self.root.configure(background=BACKGROUND_COLOR)
-        self.icon = tk.PhotoImage(file="assets/icon.png")
-        self.root.iconphoto(False, self.icon)
+        # self.icon = tk.PhotoImage(file="assets/icon.png")
+        # self.root.iconphoto(False, self.icon)
 
         self.file = None
         file = None
